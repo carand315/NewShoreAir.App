@@ -1,0 +1,26 @@
+.row
+  margin: 1rem 0 1rem 0
+
+.mat-expansion-panel-header-title,
+.mat-expansion-panel-header-description
+  flex-basis: 0
+  color: #3f51b5
+
+.mat-expansion-panel-header-description
+  justify-content: space-evenly
+  align-items: center
+
+.mat-expansion-panel-header
+  background-color: white
+
+.mat-expansion-panel
+  .mat-expansion-panel-header
+    &:hover
+      &:not([aria-disabled=true])
+        background: #3f51b5
+    &:hover
+      .mat-expansion-panel-header-title,
+      .mat-expansion-panel-header-description
+        color: white
+        background-color: #3f51b5
+

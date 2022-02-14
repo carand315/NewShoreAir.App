@@ -1,0 +1,94 @@
+<form (submit)="onSubmit()" [formGroup]="form" class="example-form">
+  <mat-card>
+    <mat-card-title>NewShore Air Booking Flights.</mat-card-title>
+    <mat-card-subtitle>
+      Search for flights by origin and destination.</mat-card-subtitle
+    >
+    <mat-card-content>
+      <div class="row middle-xs">
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-error *ngIf="form.controls.origin.errors">
+              3 letter must be required <strong>'XXX'</strong>
+            </mat-error>
+            <mat-label>Origin</mat-label>
+            <input
+              #code
+              (input)="code.value = code.value.toUpperCase()"
+              type="text"
+              matInput
+              formControlName="origin"
+              [matAutocomplete]="auto1"
+            />
+            <mat-autocomplete #auto1="matAutocomplete">
+              <mat-option
+                [value]="option"
+                *ngFor="let option of originCodes$ | async"
+              >
+                {{ option }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-error *ngIf="form.controls.destination.errors">
+              3 letter must be required <strong>'XXX'</strong>
+            </mat-error>
+            <mat-label>Destination</mat-label>
+            <input
+              #code2
+              (input)="code2.value = code2.value.toUpperCase()"
+              type="text"
+              formControlName="destination"
+              matInput
+              [matAutocomplete]="auto2"
+            />
+            <mat-autocomplete #auto2="matAutocomplete">
+              <div *ngFor="let option of destinationCodes$ | async">
+                <mat-option
+                  *ngIf="option !== this.form.value.origin"
+                  [value]="option"
+                >
+                  {{ option }}
+                </mat-option>
+              </div>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field color="accent" appearance="outline">
+            <mat-label>Currency</mat-label>
+            <mat-select
+              formControlName="currency"
+              (selectionChange)="onSelectionChange($event)"
+            >
+              <mat-option
+                *ngFor="let currency of ['USD', 'COP', 'EUR']"
+                [value]="currency"
+              >
+                {{ currency }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Max Stops</mat-label>
+            <mat-select formControlName="maxStops">
+              <mat-option
+                *ngFor="let stops of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+                [value]="stops"
+              >
+                {{ stops }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <button [disabled]="!form.valid" type="submit" mat-raised-button color="accent">Search</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

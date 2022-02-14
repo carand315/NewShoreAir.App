@@ -1,0 +1,111 @@
+<mat-tab-group class="mt-2">
+  <mat-tab label="Departure">
+    <div *ngIf="(originFlight$ | async)?.length; else empty">
+      <div class="row" *ngFor="let originFlight of originFlight$ | async">
+        <div class="col-xs">
+          <mat-accordion>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <div class="col-xs-1">
+                    {{ originFlight.flights[0].origin }}
+                  </div>
+                  <div class="col-xs-1 separator"></div>
+                  <div class="col-xs-1 center-xs">
+                    <mat-icon>flight_takeoff</mat-icon>
+                  </div>
+                  <div class="col-xs-1 separator"></div>
+                  <div class="col-xs-1">
+                    {{ originFlight.flights[0].destination }}
+                  </div>
+                </mat-panel-title>
+
+                <mat-panel-description>
+                  <div class="col-xs end-xs">
+                    <span *ngIf="selectedCurrency$ | async; let currency">{{
+                      originFlight.price * currency.value
+                        | currency: currency.name
+                    }}</span>
+                  </div>
+
+                  <div class="col-xs end-xs">
+                    <mat-icon>flight</mat-icon>
+                  </div>
+
+                  <div class="col-xs end-xs">
+                    <span> Stops {{ originFlight.flights.length - 1 }}</span>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <app-trip
+                *ngFor="let trip of originFlight.flights"
+                [flight]="trip"
+              ></app-trip>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Return">
+    <div *ngIf="(destinationFlight$ | async)?.length; else empty">
+      <div
+        class="row"
+        *ngFor="let destinationFlight of destinationFlight$ | async"
+      >
+        <div class="col-xs">
+          <mat-accordion>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <div class="col-xs-1">
+                    {{ destinationFlight.flights[0].origin }}
+                  </div>
+                  <div class="col-xs-1 separator"></div>
+                  <div class="col-xs-1 center-xs">
+                    <mat-icon>flight_takeoff</mat-icon>
+                  </div>
+                  <div class="col-xs-1 separator"></div>
+                  <div class="col-xs-1">
+                    {{ destinationFlight.flights[0].destination }}
+                  </div>
+                </mat-panel-title>
+
+                <mat-panel-description>
+                  <div class="col-xs end-xs">
+                    <span *ngIf="selectedCurrency$ | async; let currency">{{
+                      destinationFlight.price * currency.value
+                        | currency: currency.name
+                    }}</span>
+                  </div>
+
+                  <div class="col-xs end-xs">
+                    <mat-icon>flight</mat-icon>
+                  </div>
+
+                  <div class="col-xs end-xs">
+                    <span>
+                      Stops {{ destinationFlight.flights.length - 1 }}</span
+                    >
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <app-trip
+                *ngFor="let trip of destinationFlight.flights"
+                [flight]="trip"
+              ></app-trip>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
+<ng-template #empty>
+  <div class="mt-2 row">
+    <h3>No Flights Found</h3>
+    <mat-icon style="margin-left: 1rem;">airplanemode_inactive</mat-icon>
+  </div>
+</ng-template>
